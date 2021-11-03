@@ -154,6 +154,8 @@ private:
   void EmitReturn();
   /// Emit an add opcode.
   void EmitAdd();
+  /// Emit an mul opcode.
+  void EmitMul();
   /// Emit a label.
   void EmitLabel(Label label);
   /// Emit a conditional jump.

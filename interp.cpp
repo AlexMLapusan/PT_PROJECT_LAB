@@ -58,6 +58,13 @@ void Interp::Run()
         Push(lhs + rhs);
         continue;
       }
+      //step 6 do the actual multiplication
+      case Opcode::MUL: {
+        auto rhs = PopInt();
+        auto lhs = PopInt();
+        Push(lhs * rhs);
+        continue;
+      }
       case Opcode::RET: {
         auto depth = prog_.Read<unsigned>(pc_);
         auto nargs = prog_.Read<unsigned>(pc_);
