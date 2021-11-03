@@ -47,6 +47,8 @@ public:
     EQUAL,
     COMMA,
     PLUS,
+    MUL, //step 1
+    EQ,
     // Complex tokens.
     INT,
     STRING,
@@ -87,6 +89,13 @@ public:
     return *value_.StringValue;
   }
 
+  /// Return the integer value.
+  std::uint64_t GetValue() const
+  {
+    assert(Is(Kind::INT) && "not an identifier");
+    return value_.IntValue;
+  }
+
   /// Copy operator.
   Token &operator=(const Token &that);
 
@@ -100,12 +109,14 @@ public:
   static Token Semi(const Location &l) { return Token(l, Kind::SEMI); }
   static Token Equal(const Location &l) { return Token(l, Kind::EQUAL); }
   static Token Plus(const Location &l) { return Token(l, Kind::PLUS); }
+  static Token Mul(const Location &l) { return Token(l, Kind::MUL); }
   static Token Comma(const Location &l) { return Token(l, Kind::COMMA); }
   static Token Func(const Location &l) { return Token(l, Kind::FUNC); }
   static Token Return(const Location &l) { return Token(l, Kind::RETURN); }
   static Token While(const Location &l) { return Token(l, Kind::WHILE); }
   static Token Ident(const Location &l, const std::string &str);
   static Token String(const Location &l, const std::string &str);
+  static Token Int(const Location &l, const std::uint64_t num);
 
   /// Print the token to a stream.
   void Print(std::ostream &os) const;

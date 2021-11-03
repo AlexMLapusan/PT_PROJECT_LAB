@@ -45,6 +45,7 @@ public:
     REF,
     BINARY,
     CALL,
+    INT,
   };
 
 public:
@@ -56,6 +57,26 @@ private:
   /// Kind of the expression.
   Kind kind_;
 };
+
+
+/**
+ * Expression referring to an integer value.
+ */
+class IntExpr : public Expr {
+public:
+  IntExpr(const std::uint64_t value)
+    : Expr(Kind::INT)
+    , value_(value)
+  {
+  }
+
+  const std::uint64_t &GetValue() const { return value_; }
+
+private:
+  /// Name of the identifier.
+  std::uint64_t value_;
+};
+
 
 /**
  * Expression referring to a named value.
@@ -82,7 +103,8 @@ class BinaryExpr : public Expr {
 public:
   /// Enumeration of binary operators.
   enum class Kind {
-    ADD
+    ADD,
+    MUL
   };
 
 public:

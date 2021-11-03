@@ -38,6 +38,7 @@ public:
       int64_t Int;
     } Val;
 
+    //Obs: size_t is equivalent with uint64_t
     Value() : Kind(Kind::INT) { Val.Int = 0; }
     Value(RuntimeFn val) : Kind(Kind::PROTO) { Val.Proto = val; }
     Value(size_t val) : Kind(Kind::ADDR) { Val.Addr = val; }

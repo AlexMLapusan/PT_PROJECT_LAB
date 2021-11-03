@@ -17,6 +17,10 @@ Token::Token(const Token &that)
       value_.StringValue = new std::string(*that.value_.StringValue);
       break;
     }
+    case Kind::INT: {
+      value_.IntValue = that.value_.IntValue;
+      break;
+    }
     default: {
       break;
     }
@@ -42,6 +46,10 @@ Token &Token::operator=(const Token &that)
     case Kind::STRING:
     case Kind::IDENT: {
       value_.StringValue = new std::string(*that.value_.StringValue);
+      break;
+    }
+    case Kind::INT: {
+      value_.IntValue = that.value_.IntValue;
       break;
     }
     default: {
@@ -79,6 +87,14 @@ Token Token::String(const Location &l, const std::string &str)
 {
   Token tk(l, Kind::STRING);
   tk.value_.StringValue = new std::string(str);
+  return tk;
+}
+
+// -----------------------------------------------------------------------------
+Token Token::Int(const Location &l, const std::uint64_t num)
+{
+  Token tk(l, Kind::INT);
+  tk.value_.IntValue = num;
   return tk;
 }
 
@@ -121,10 +137,12 @@ std::ostream &operator<<(std::ostream &os, const Token::Kind kind)
     case Token::Kind::EQUAL: return os << "=";
     case Token::Kind::COMMA: return os << ",";
     case Token::Kind::PLUS: return os << "+";
+    case Token::Kind::MUL: return os << "*"; //step 2
     case Token::Kind::END: return os << "END";
     case Token::Kind::INT: return os << "INT";
     case Token::Kind::STRING: return os << "STRING";
     case Token::Kind::IDENT: return os << "IDENT";
+    case Token::Kind::EQ: return os << "EQ";
   }
   return os;
 }
@@ -182,6 +200,7 @@ const Token &Lexer::Next()
     case ';': return NextChar(), tk_ = Token::Semi(loc);
     case '=': return NextChar(), tk_ = Token::Equal(loc);
     case '+': return NextChar(), tk_ = Token::Plus(loc);
+    case '*': return NextChar(), tk_ = Token::Mul(loc); //step 3
     case ',': return NextChar(), tk_ = Token::Comma(loc);
     case '"': {
       std::string word;
@@ -207,6 +226,15 @@ const Token &Lexer::Next()
         if (word == "return") return tk_ = Token::Return(loc);
         if (word == "while") return tk_ = Token::While(loc);
         return tk_ = Token::Ident(loc, word);
+      }
+      if(isdigit(chr_)){
+        std::uint64_t num = 0;
+        do {
+          num *= 10;
+          num += chr_ - '0';
+          NextChar();
+        } while (isdigit(chr_));
+        return tk_ = Token::Int(loc, num);
       }
       Error("unknown character '" + std::string(1, chr_) + "'");
     }
