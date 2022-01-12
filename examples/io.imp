@@ -7,3 +7,12 @@ func test(a: int, b: int): int {
 }
 
 print_int(test(read_int(), read_int()))
+
+
+//next cere urm token din stringul parsat
+//lexer-u transforma secventa de caractere in secventa parsata de tokeni (it tokenizes a stream)
+//dupa tokenizare urmeaza parsarea (analiza sintactica) care creeaza un parse tree
+//nodurile din arborele sintactic rezultat dupa parsare sunt declarate in ast.h
+//ref expr se rfera la o variabila
+//codegen ia arborele recursiv si il transforma in codul ce stie sa fie executat
+//interpretorul citeste ce trebuie executat si executa pe stiva

@@ -178,6 +178,9 @@ std::shared_ptr<Expr> Parser::ParseCallExpr()
   return callee;
 }
 
+//pentru precedenta operatorilor trebuie sa avem apeluri spre operatii cu un nivel mai mare
+// 
+
 // -----------------------------------------------------------------------------
 std::shared_ptr<Expr> Parser::ParseAddSubExpr()
 {
